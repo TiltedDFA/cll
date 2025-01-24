@@ -13,10 +13,15 @@ namespace cll
 			data_()
 		{}
 
-		constexpr Array(T const& value):
+		constexpr explicit Array(T&& value):
 			data_()
 		{
 			cll::Fill(data_, data_ + SIZE, value);
+		}
+		template<typename... Args>
+		constexpr explicit Array(Args&&... args)
+		{
+			InitFromList(0, std::forward<Args>(args)...);
 		}
 		
 		[[nodiscard]]
@@ -34,7 +39,16 @@ namespace cll
 
 		constexpr T& operator[](cll::sizet idx) noexcept {return data_[idx];}
 		constexpr T const& operator[](cll::sizet idx) const noexcept {return data_[idx];}
-		
+	private:
+		template<typename Arg, typename... Args>
+		constexpr void InitFromList(cll::sizet idx, Arg&& arg, Args&&... args)
+		{
+			data_[idx] = std::forward<Arg>(arg);
+			InitFromList(idx + 1, std::forward<Args>(args)...);
+		}
+		//base case
+		template<typename Arg>
+		constexpr void InitFromList(cll::sizet idx, Arg&& arg){data_[idx] = std::forward<Arg>(arg);}
 	private:
 		T data_[SIZE];
 	};

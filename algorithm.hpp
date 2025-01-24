@@ -34,7 +34,7 @@ namespace cll
 	template<typename T>
 	constexpr void Fill(T* start, T const* const end, T const& value)
 	{
-		while(start != end)*start++ = value;
+		while(start != end) *start++ = value;
 	}
 	template<typename T>
 	constexpr void Fill(T* start, cll::sizet count, T const& value)
