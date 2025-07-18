@@ -1,6 +1,8 @@
 #ifndef CLL_ARRAY_HPP
 #define CLL_ARRAY_HPP
 
+#include <utility>
+
 #include "algorithm.hpp"
 
 namespace cll
@@ -25,30 +27,30 @@ namespace cll
 		}
 		
 		[[nodiscard]]
-		constexpr cll::sizet Size() const noexcept {return SIZE;}
+		constexpr auto Size() const noexcept -> cll::sizet {return SIZE;}
 
-		// constexpr T const* cbegin() const noexcept {return data_;}
-		constexpr T* begin() noexcept {return data_;}
+		// constexpr auto cbegin() const noexcept -> T const* {return data_;}
+		constexpr auto begin() noexcept -> T* {return data_;}
 		//for some reason when trying to use this array as a const in a for each
 		//loop, it doesn't look for cbegin but rather fails as it wants a begin marked as const.
-		constexpr T const* begin() const noexcept {return data_;}
+		constexpr auto begin() const noexcept -> T const* {return data_;}
 
-		// constexpr T const* cend() const noexcept {return data_ + SIZE;}
-		constexpr T* end() noexcept {return data_ + SIZE;}
-		constexpr T const* end() const noexcept {return data_ + SIZE;}
+		// constexpr auto cend() const noexcept -> T const* {return data_ + SIZE;}
+		constexpr auto end() noexcept -> T* {return data_ + SIZE;}
+		constexpr auto end() const noexcept -> T const* {return data_ + SIZE;}
 
-		constexpr T& operator[](cll::sizet idx) noexcept {return data_[idx];}
-		constexpr T const& operator[](cll::sizet idx) const noexcept {return data_[idx];}
+		constexpr auto operator[](cll::sizet idx) noexcept -> T& {return data_[idx];}
+		constexpr auto operator[](cll::sizet idx) const noexcept -> T const& {return data_[idx];}
 	private:
 		template<typename Arg, typename... Args>
-		constexpr void InitFromList(cll::sizet idx, Arg&& arg, Args&&... args)
+		constexpr auto InitFromList(cll::sizet idx, Arg&& arg, Args&&... args) -> void
 		{
 			data_[idx] = std::forward<Arg>(arg);
 			InitFromList(idx + 1, std::forward<Args>(args)...);
 		}
 		//base case
 		template<typename Arg>
-		constexpr void InitFromList(cll::sizet idx, Arg&& arg){data_[idx] = std::forward<Arg>(arg);}
+		constexpr auto InitFromList(cll::sizet idx, Arg&& arg) -> void {data_[idx] = std::forward<Arg>(arg);}
 	private:
 		T data_[SIZE];
 	};

@@ -15,7 +15,9 @@ namespace cll
 			capacity_(0)
 		{}
 		Vector(cll::sizet size):
-			Vector()
+			data_(nullptr),
+			size_(size),
+			capacity_(size)
 		{
 			data_ = new T[size]{};
 		}
@@ -47,7 +49,7 @@ namespace cll
 			size_ = other.size_;
 			capacity_ = other.capacity_;
 		}
-		Vector<T>& operator=(Vector<T>&& other)
+		auto operator=(Vector<T>&& other) -> Vector<T>&
 		{
 			delete[] data_;
 			data_ = other.data_;
@@ -55,35 +57,36 @@ namespace cll
 			size_ = other.size_;
 			capacity_ = other.capacity_;
 		}
-		T& operator[](cll::sizet index)
+		auto operator[](cll::sizet index) -> T&
 		{
 			return data_[index];
 		}
-		cll::sizet Size() const {return size_;}
-		void push_back(T const& val)
+		[[nodiscard]] auto Size() const -> cll::sizet {return size_;}
+		auto push_back(T const& val) -> void
 		{
 			if(!can_handle_more()) resize();
 			data_[size_++] = val;
 		}
-		T* begin() {return data_;}
-		T* end() {return data_ + size_;}
-		T const* cbegin() const {return data_;}
-		T const* cend() const {return data_ + size_;}
+		auto begin() -> T* {return data_;}
+		auto end() -> T* {return data_ + size_;}
+		auto cbegin() const -> T const*  {return data_;}
+		auto cend() const -> T const*  {return data_ + size_;}
 
-
-
-
+		auto clear() -> void
+		{
+			size_ = 0;
+		}
 	private:
-		bool can_handle_more(cll::sizet count_to_add = 1)
+		auto can_handle_more(cll::sizet count_to_add = 1) -> bool
 		{
 			return size_ + count_to_add <= capacity_;
 		}
-		void resize()
+		auto resize() -> void
 		{
 			T* tmp = new T[capacity_ *= 2]{};
 			cll::memcpy(data_, tmp, size_);
 			delete[] data_;
-			data = tmp;	
+			data_ = tmp;
 		}
 	private:
 		T* data_;

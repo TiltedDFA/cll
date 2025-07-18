@@ -5,14 +5,14 @@
 
 namespace cll
 {
-	constexpr cll::sizet StrLen(char const* str)
+	constexpr auto StrLen(char const* str) -> cll::sizet
 	{
 		cll::sizet len{};
 		while(*str++ != '\0')++len;
 		return len;
 	}
 	template<typename T>
-	constexpr T const* Find(T const* start, T const* const end, T const* const value)
+	constexpr auto Find(T const* start, T const* const end, T const* const value) -> T const*
 	{
 		while(start != end)
 		{
@@ -22,7 +22,7 @@ namespace cll
 		return end;
 	}
 	template<typename T>
-	constexpr T const* Find(T const* start, T const* const end, T&& value)
+	constexpr auto Find(T const* start, T const* const end, T&& value) -> T const*
 	{
 		while(start != end)
 		{
@@ -32,17 +32,17 @@ namespace cll
 		return end;
 	}
 	template<typename T>
-	constexpr void Fill(T* start, T const* const end, T const& value)
+	constexpr auto Fill(T* start, T const* const end, T const& value) -> void
 	{
 		while(start != end) *start++ = value;
 	}
 	template<typename T>
-	constexpr void Fill(T* start, cll::sizet count, T const& value)
+	constexpr auto Fill(T* start, cll::sizet count, T const& value) -> void
 	{
 		Fill(start, start + count, value);
 	}	
 	template<typename T>
-	constexpr void memcpy(T* src, T* dest, cll::sizet count)
+	constexpr auto memcpy(T* src, T* dest, cll::sizet count) -> void
 	{
 		while(count-- > 0) *dest++ = *src++;
 	}
