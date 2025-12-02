@@ -7,7 +7,7 @@
 
 namespace cll
 {
-	template<typename T, cll::sizet SIZE>
+	template<typename T, cll::size_t SIZE>
 	class Array
 	{
 	public:
@@ -27,7 +27,7 @@ namespace cll
 		}
 		
 		[[nodiscard]]
-		constexpr auto Size() const noexcept -> cll::sizet {return SIZE;}
+		constexpr auto Size() const noexcept -> cll::size_t {return SIZE;}
 
 		// constexpr auto cbegin() const noexcept -> T const* {return data_;}
 		constexpr auto begin() noexcept -> T* {return data_;}
@@ -39,18 +39,18 @@ namespace cll
 		constexpr auto end() noexcept -> T* {return data_ + SIZE;}
 		constexpr auto end() const noexcept -> T const* {return data_ + SIZE;}
 
-		constexpr auto operator[](cll::sizet idx) noexcept -> T& {return data_[idx];}
-		constexpr auto operator[](cll::sizet idx) const noexcept -> T const& {return data_[idx];}
+		constexpr auto operator[](cll::size_t idx) noexcept -> T& {return data_[idx];}
+		constexpr auto operator[](cll::size_t idx) const noexcept -> T const& {return data_[idx];}
 	private:
 		template<typename Arg, typename... Args>
-		constexpr auto InitFromList(cll::sizet idx, Arg&& arg, Args&&... args) -> void
+		constexpr auto InitFromList(cll::size_t idx, Arg&& arg, Args&&... args) -> void
 		{
 			data_[idx] = std::forward<Arg>(arg);
 			InitFromList(idx + 1, std::forward<Args>(args)...);
 		}
 		//base case
 		template<typename Arg>
-		constexpr auto InitFromList(cll::sizet idx, Arg&& arg) -> void {data_[idx] = std::forward<Arg>(arg);}
+		constexpr auto InitFromList(cll::size_t idx, Arg&& arg) -> void {data_[idx] = std::forward<Arg>(arg);}
 	private:
 		T data_[SIZE];
 	};

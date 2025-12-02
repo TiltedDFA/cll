@@ -29,6 +29,7 @@ int main(void)
 	prnt(cpy2);
 
 	std::cout << message << cll::Find(message, message + cll::StrLen(message), 'q') << '\n' << cll::StrLen(message) << (myarr.end()) << std::endl;
+	cll::basicprintln(message, cll::Find(message, message + cll::StrLen(message), 'q'), '\n', cll::StrLen(message), myarr.end());
 	return 0;
 }
 

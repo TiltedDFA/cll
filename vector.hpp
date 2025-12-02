@@ -14,7 +14,7 @@ namespace cll
 			size_(0),
 			capacity_(0)
 		{}
-		Vector(cll::sizet size):
+		Vector(cll::size_t size):
 			data_(nullptr),
 			size_(size),
 			capacity_(size)
@@ -33,13 +33,14 @@ namespace cll
 			size_ = other.size_;
 			capacity_ = other.capacity_;
 		}
-		Vector<T>& operator=(Vector<T> const& other)
+		auto operator=(Vector<T> const& other) -> Vector<T>&
 		{
 			delete[] data_;
 			data_ = new T[other.size_];
 			cll::memcpy(other.data_, data_, other.size_);
 			size_ = other.size_;
 			capacity_ = other.capacity_;
+			return *this;
 		}
 		Vector(Vector<T>&& other)
 		{
@@ -49,19 +50,20 @@ namespace cll
 			size_ = other.size_;
 			capacity_ = other.capacity_;
 		}
-		auto operator=(Vector<T>&& other) -> Vector<T>&
+		auto operator=(Vector<T>&& other)  noexcept -> Vector<T>&
 		{
 			delete[] data_;
 			data_ = other.data_;
 			other.data_ = nullptr;
 			size_ = other.size_;
 			capacity_ = other.capacity_;
+			return *this;
 		}
-		auto operator[](cll::sizet index) -> T&
+		auto operator[](cll::size_t index) -> T&
 		{
 			return data_[index];
 		}
-		[[nodiscard]] auto Size() const -> cll::sizet {return size_;}
+		[[nodiscard]] auto Size() const -> cll::size_t {return size_;}
 		auto push_back(T const& val) -> void
 		{
 			if(!can_handle_more()) resize();
@@ -72,12 +74,16 @@ namespace cll
 		auto cbegin() const -> T const*  {return data_;}
 		auto cend() const -> T const*  {return data_ + size_;}
 
+		auto back() -> T& {return data_[size_ - 1];}
+		auto back() const -> T const& {return data_[size_ - 1];}
+		auto pop_back() -> void {--size_;}
+
 		auto clear() -> void
 		{
 			size_ = 0;
 		}
 	private:
-		auto can_handle_more(cll::sizet count_to_add = 1) -> bool
+		[[nodiscard]] auto can_handle_more(cll::size_t count_to_add = 1) const -> bool
 		{
 			return size_ + count_to_add <= capacity_;
 		}
@@ -90,8 +96,8 @@ namespace cll
 		}
 	private:
 		T* data_;
-		cll::sizet size_;
-		cll::sizet capacity_;
+		cll::size_t size_;
+		cll::size_t capacity_;
 	};
 
 
